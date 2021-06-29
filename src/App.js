@@ -1,5 +1,5 @@
-import { BrowserRouter as Router,
-  Switch, Route, Link, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Switch, Route, Link, useParams, useHistory } from 'react-router-dom';
 import './App.css';
 
 const Home = () => <h3>H</h3>
@@ -28,20 +28,49 @@ const Note = ({ notes }) => {
       <h3>{ note.content }</h3>
       )  
 }
+const Login = ({ handleSubmit }) => {
+  return (
+    <div>
+      <h3>Li</h3>
+      <form onSubmit={handleSubmit}>
+          <div>
+            Nm: <input />
+          </div>
+          <div>
+            P: <input type='password'/>
+          </div>
+          <button type='submit'>Li</button>
+        </form>
+      </div>
+    )
+}
+
 function App() {
+  const [ user, setUser ] = useState(null);
+  const history = useHistory();
+
+  const handleSubmit = (ev) => {
+    ev.preventDefault(); 
+    setUser(ev.target[0].value);
+    history.push('/');
+  }
   const padding = { padding: 5 }
   return (
     <div className="App">
-      <Router>
         <div>
           <Link to='/'  style={padding}>H</Link>
           <Link to='/notes'  style={padding}>N</Link>
           <Link to='/users' style={padding}>U</Link>
+          { user
+          ? <em>{ user } logged in</em>
+          : <Link to='/login' style={padding}>login</Link>
+          }
         </div>
         <Switch>
           <Route path='/notes/:id'><Note notes={notes} /></Route>
           <Route path='/users'><Users /></Route>
           <Route path='/notes'><Notes notes={notes} /></Route>
+          <Route path='/login'><Login handleSubmit={handleSubmit}/></Route>
           <Route path='/'><Home /></Route>
         </Switch>
         <div>
@@ -53,7 +82,6 @@ function App() {
           <Link to='/users' style={padding}>U</Link>
           <Link to='/more' style={padding}>M</Link>
         </div>
-      </Router>
     </div>
   );
 }
