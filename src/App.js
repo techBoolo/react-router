@@ -1,10 +1,33 @@
 import { BrowserRouter as Router,
-  Switch, Route, Link } from 'react-router-dom';
+  Switch, Route, Link, useParams } from 'react-router-dom';
 import './App.css';
 
 const Home = () => <h3>H</h3>
 const Users = () => <h3>U</h3>
-const Notes = () => <h3>N</h3>
+const Notes = ({ notes }) => {
+  return (
+      <ul>
+        { notes.map(note => 
+            <li key={note.id}>
+              <Link to={`/notes/${note.id}`}>{note.content}</Link>
+            </li>
+          )
+        }
+      </ul>
+      )
+}
+const notes = [
+  { content: 'C1', id: 1},  
+  { content: 'C2', id: 2},
+  { content: 'C3', id: 3}
+]
+const Note = ({ notes }) => {
+   const id = useParams().id;
+   const note = notes.find(n => n.id === Number(id))
+  return (
+      <h3>{ note.content }</h3>
+      )  
+}
 function App() {
   const padding = { padding: 5 }
   return (
@@ -16,8 +39,9 @@ function App() {
           <Link to='/users' style={padding}>U</Link>
         </div>
         <Switch>
+          <Route path='/notes/:id'><Note notes={notes} /></Route>
           <Route path='/users'><Users /></Route>
-          <Route path='/notes'><Notes /></Route>
+          <Route path='/notes'><Notes notes={notes} /></Route>
           <Route path='/'><Home /></Route>
         </Switch>
         <div>
