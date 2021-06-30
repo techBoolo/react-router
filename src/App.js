@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Switch, Route, Link, useParams, useHistory } from 'react-router-dom';
+import { Switch, Route, Link, useParams, useHistory, Redirect } from 'react-router-dom';
 import './App.css';
 
 const Home = () => <h3>H</h3>
@@ -68,7 +68,12 @@ function App() {
         </div>
         <Switch>
           <Route path='/notes/:id'><Note notes={notes} /></Route>
-          <Route path='/users'><Users /></Route>
+          <Route path='/users'>
+            { user
+              ? <Users />
+              : <Redirect to='/login' />
+            }
+          </Route>
           <Route path='/notes'><Notes notes={notes} /></Route>
           <Route path='/login'><Login handleSubmit={handleSubmit}/></Route>
           <Route path='/'><Home /></Route>
