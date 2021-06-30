@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Switch, Route, Link, useHistory, Redirect, useRouteMatch } from 'react-router-dom';
 import { useCounter, useField } from './customHook';
+import  Container  from '@material-ui/core/Container';
+
+import { TableContainer, TableCell, TableRow, Paper, Table, TableBody } from '@material-ui/core';
+import { TextField,Toolbar, Button, AppBar, IconButton } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import './App.css';
 
 const notes = [
@@ -14,14 +19,22 @@ const Users = () => <h3>U</h3>
 
 const Notes = ({ notes }) => {
   return (
-      <ul>
-        { notes.map(note => 
-            <li key={note.id}>
-              <Link to={`/notes/${note.id}`}>{note.content}</Link>
-            </li>
-          )
-        }
-      </ul>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+          { notes.map(note => (
+              <TableRow key={note.id}>
+                <TableCell>
+                  <Link to={`/notes/${note.id}`}>{note.content}</Link>
+                </TableCell>
+                <TableCell>
+                  { note.content }
+                </TableCell>
+              </TableRow>
+          ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       )
 }
 
@@ -37,12 +50,12 @@ const Login = ({ handleSubmit }) => {
       <h3>Li</h3>
       <form onSubmit={handleSubmit}>
           <div>
-            Nm: <input />
+            <TextField label='N:' />
           </div>
           <div>
-            P: <input type='password'/>
+            <TextField label='P:' type='password'/>
           </div>
-          <button type='submit'>Li</button>
+          <Button variant='contained' color='primary' type='submit'>Li</Button>
         </form>
       </div>
     )
@@ -51,6 +64,7 @@ const Login = ({ handleSubmit }) => {
 function App() {
   const [ user, setUser ] = useState(null);
   const [ name, setName ] = useState('');
+  const [ message, setMessage ] = useState(null);
   const bdate = useField('date');
   const height = useField('number');
 
@@ -67,6 +81,10 @@ function App() {
   const handleSubmit = (ev) => {
     ev.preventDefault(); 
     setUser(ev.target[0].value);
+    setMessage(`Welcome ${ev.target[0].value}`)
+      setTimeout(() => {
+        setMessage(null) 
+      }, 3000)
     history.push('/');
   }
   const padding = { padding: 5 }
@@ -74,16 +92,29 @@ function App() {
   const border = { borderBottom: "2px solid #ccc" }
 
   return (
-    <div className="App">
-        <div>
-          <Link to='/'  style={padding}>H</Link>
-          <Link to='/notes'  style={padding}>N</Link>
-          <Link to='/users' style={padding}>U</Link>
-          { user
-          ? <em>{ user } logged in</em>
-          : <Link to='/login' style={padding}>login</Link>
-          }
-        </div>
+    <Container>
+      <div>
+        {
+          (message && 
+           <Alert severity='success'>
+            { message }
+           </Alert>
+        )}
+      </div>
+        <AppBar position='static'>
+          <Toolbar>
+            <IconButton edge='start' color='inherit' aria-label='menu'>
+            </IconButton>
+
+            <Button color='inherit'><Link to='/'>H</Link></Button>
+            <Button color='inherit' component={Link} to='/notes'>N</Button>
+            <Button color='inherit'><Link to='/users'>U</Link></Button>
+            { user
+              ? <em>{ user } logged in</em>
+              : <Button color='inherit' component={Link} to='/login'>login</Button>
+            }
+          </Toolbar>
+        </AppBar>
         <Switch>
           <Route path='/notes/:id'><Note note={note} /></Route>
           <Route path='/users'>
@@ -130,7 +161,7 @@ function App() {
           <Link to='/users' style={padding}>U</Link>
           <Link to='/more' style={padding}>M</Link>
         </div>
-    </div>
+    </Container>
   );
 }
 
