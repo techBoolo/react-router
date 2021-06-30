@@ -1,8 +1,34 @@
 import { useState } from 'react';
 import { Switch, Route, Link, useHistory, Redirect, useRouteMatch } from 'react-router-dom';
 import { useCounter, useField } from './customHook';
+import styled from 'styled-components';
+
 import './App.css';
 
+const Button = styled.button`
+  background: Bisque;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid Chocolate;
+  border-radius: 3px;
+`
+const Input = styled.input`
+  margin: 0.25em;
+`
+const Page = styled.div`
+  padding: 1em;
+  background: papayawhip;
+`
+const Navigation = styled.div`
+  background: BurlyWood;
+  padding: 1em;
+`
+const Footer = styled.div`
+  background: Chocolate;
+  padding: 1em;
+  margin-top: 1em;
+`
 const notes = [
   { content: 'C1', id: 1},  
   { content: 'C2', id: 2},
@@ -37,12 +63,12 @@ const Login = ({ handleSubmit }) => {
       <h3>Li</h3>
       <form onSubmit={handleSubmit}>
           <div>
-            Nm: <input />
+            Nm: <Input />
           </div>
           <div>
-            P: <input type='password'/>
+            P: <Input type='password'/>
           </div>
-          <button type='submit'>Li</button>
+          <Button type='submit'>Li</Button>
         </form>
       </div>
     )
@@ -74,8 +100,8 @@ function App() {
   const border = { borderBottom: "2px solid #ccc" }
 
   return (
-    <div className="App">
-        <div>
+    <Page>
+        <Navigation>
           <Link to='/'  style={padding}>H</Link>
           <Link to='/notes'  style={padding}>N</Link>
           <Link to='/users' style={padding}>U</Link>
@@ -83,7 +109,7 @@ function App() {
           ? <em>{ user } logged in</em>
           : <Link to='/login' style={padding}>login</Link>
           }
-        </div>
+        </Navigation>
         <Switch>
           <Route path='/notes/:id'><Note note={note} /></Route>
           <Route path='/users'>
@@ -121,16 +147,18 @@ function App() {
           <span style={{ color: 'red'}}>{ disLike.value }</span>
         </div>
         <hr />
-        <div>
-          <p>Notes app, Dep. of CS, 2021</p>
-        </div>
-        <div>
-          <Link to='/'  style={padding}>H</Link>
-          <Link to='/notes'  style={padding}>N</Link>
-          <Link to='/users' style={padding}>U</Link>
-          <Link to='/more' style={padding}>M</Link>
-        </div>
-    </div>
+        <Footer>
+          <div>
+            <Link to='/'  style={padding}>H</Link>
+            <Link to='/notes'  style={padding}>N</Link>
+            <Link to='/users' style={padding}>U</Link>
+            <Link to='/more' style={padding}>M</Link>
+          </div>
+          <div>
+            <p>Notes app, Dep. of CS, 2021</p>
+          </div>
+        </Footer>
+    </Page>
   );
 }
 
