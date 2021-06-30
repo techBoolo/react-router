@@ -51,6 +51,9 @@ const Login = ({ handleSubmit }) => {
 function App() {
   const [ user, setUser ] = useState(null);
   const counter = useCounter();
+  const like = useCounter();
+  const disLike = useCounter();
+
   const history = useHistory();
   const match = useRouteMatch('/notes/:id');
   const note = match
@@ -63,6 +66,9 @@ function App() {
     history.push('/');
   }
   const padding = { padding: 5 }
+  const margin = { margin: 5 }
+  const border = { borderBottom: "2px solid #ccc" }
+
   return (
     <div className="App">
         <div>
@@ -87,12 +93,20 @@ function App() {
           <Route path='/'><Home /></Route>
         </Switch>
         <div>
-          <h4>C C hook</h4> 
+          <h4><span style={border}>C C hook</span></h4> 
           <div>{counter.value}</div>
           <button onClick={counter.increase}>Inc</button>
           <button onClick={counter.reset}>Reset</button>
           <button onClick={counter.decrease}>Dec</button>
         </div>
+        <div>
+          <h4>Like, Dislike</h4>
+          <span style={{ color: 'green'}}>{ like.value }</span>
+          <button onClick={like.increase} style={margin}>Like</button>
+          <button onClick={disLike.increase} style={margin}>Dislike</button>
+          <span style={{ color: 'red'}}>{ disLike.value }</span>
+        </div>
+        <hr />
         <div>
           <p>Notes app, Dep. of CS, 2021</p>
         </div>
