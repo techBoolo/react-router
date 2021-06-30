@@ -50,6 +50,9 @@ const Login = ({ handleSubmit }) => {
 
 function App() {
   const [ user, setUser ] = useState(null);
+  const [ name, setName ] = useState('');
+  const [ bdate, setBdate ] = useState('');
+  const [ height, setHeight ] = useState('');
   const counter = useCounter();
   const like = useCounter();
   const disLike = useCounter();
@@ -100,7 +103,17 @@ function App() {
           <button onClick={counter.decrease}>Dec</button>
         </div>
         <div>
-          <h4>Like, Dislike</h4>
+          <h4><span style={border}>Form</span></h4>
+          <form>
+              Nm: <input type='text' value={name} onChange={(ev) => setName(ev.target.value)} />  
+              <br />
+              Bd: <input type='date' value={bdate} onChange={(ev) => setBdate(ev.target.value)} />  
+              <br />
+              Hg: <input type='number' value={height} onChange={(ev) => setHeight(ev.target.value)} />  
+          </form>
+        </div>
+        <div>
+          <h4><span style={border}>Like, Dislike</span></h4>
           <span style={{ color: 'green'}}>{ like.value }</span>
           <button onClick={like.increase} style={margin}>Like</button>
           <button onClick={disLike.increase} style={margin}>Dislike</button>
