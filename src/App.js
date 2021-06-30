@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Switch, Route, Link, useHistory, Redirect, useRouteMatch } from 'react-router-dom';
+import { useCounter } from './customHook';
 import './App.css';
 
 const notes = [
@@ -49,6 +50,7 @@ const Login = ({ handleSubmit }) => {
 
 function App() {
   const [ user, setUser ] = useState(null);
+  const counter = useCounter();
   const history = useHistory();
   const match = useRouteMatch('/notes/:id');
   const note = match
@@ -84,6 +86,13 @@ function App() {
           <Route path='/login'><Login handleSubmit={handleSubmit}/></Route>
           <Route path='/'><Home /></Route>
         </Switch>
+        <div>
+          <h4>C C hook</h4> 
+          <div>{counter.value}</div>
+          <button onClick={counter.increase}>Inc</button>
+          <button onClick={counter.reset}>Reset</button>
+          <button onClick={counter.decrease}>Dec</button>
+        </div>
         <div>
           <p>Notes app, Dep. of CS, 2021</p>
         </div>
