@@ -1,9 +1,16 @@
 import { useState } from 'react';
-import { Switch, Route, Link, useParams, useHistory, Redirect } from 'react-router-dom';
+import { Switch, Route, Link, useHistory, Redirect, useRouteMatch } from 'react-router-dom';
 import './App.css';
+
+const notes = [
+  { content: 'C1', id: 1},  
+  { content: 'C2', id: 2},
+  { content: 'C3', id: 3}
+]
 
 const Home = () => <h3>H</h3>
 const Users = () => <h3>U</h3>
+
 const Notes = ({ notes }) => {
   return (
       <ul>
@@ -16,18 +23,13 @@ const Notes = ({ notes }) => {
       </ul>
       )
 }
-const notes = [
-  { content: 'C1', id: 1},  
-  { content: 'C2', id: 2},
-  { content: 'C3', id: 3}
-]
-const Note = ({ notes }) => {
-   const id = useParams().id;
-   const note = notes.find(n => n.id === Number(id))
+
+const Note = ({ note }) => {
   return (
       <h3>{ note.content }</h3>
-      )  
+    )  
 }
+
 const Login = ({ handleSubmit }) => {
   return (
     <div>
@@ -48,6 +50,10 @@ const Login = ({ handleSubmit }) => {
 function App() {
   const [ user, setUser ] = useState(null);
   const history = useHistory();
+  const match = useRouteMatch('/notes/:id');
+  const note = match
+    ? notes.find(note => note.id === Number(match.params.id))
+    : null
 
   const handleSubmit = (ev) => {
     ev.preventDefault(); 
@@ -67,7 +73,7 @@ function App() {
           }
         </div>
         <Switch>
-          <Route path='/notes/:id'><Note notes={notes} /></Route>
+          <Route path='/notes/:id'><Note note={note} /></Route>
           <Route path='/users'>
             { user
               ? <Users />
